@@ -31,6 +31,7 @@ var Select = React.createClass({
 		className: React.PropTypes.string,         // className for the outer element
 		filterOption: React.PropTypes.func,        // method to filter a single option: function(option, filterString)
 		filterOptions: React.PropTypes.func,       // method to filter the options array: function([options], filterString, [values])
+		renderOption: React.PropTypes.func,        // method to render a single option: function(option)
 		matchPos: React.PropTypes.string,          // (any|start) match the start or entire string when filtering
 		matchProp: React.PropTypes.string,         // (any|label|value) which option property to filter on
 		inputProps: React.PropTypes.object,        // custom attributes for the Input (in the Select-control) e.g: {'data-foo': 'bar'}
@@ -594,7 +595,10 @@ var Select = React.createClass({
 				mouseLeave = this.unfocusOption.bind(this, op),
 				mouseDown = this.selectValue.bind(this, op);
 
-			return <div ref={ref} key={'option-' + op.value} className={optionClass} onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} onMouseDown={mouseDown} onClick={mouseDown}>{op.label}</div>;
+
+			return (<div ref={ref} key={'option-' + op.value} className={optionClass} onMouseEnter={mouseEnter} onMouseLeave={mouseLeave} onMouseDown={mouseDown} onClick={mouseDown}>
+								{ this.props.renderOption ? this.props.renderOption(op) : op.label }
+							</div>);
 
 		}, this);
 
